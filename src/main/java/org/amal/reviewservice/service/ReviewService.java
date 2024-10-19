@@ -7,28 +7,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReviewService implements CommandLineRunner {
-  private ReviewRepository reviewRepository;
+  private final ReviewRepository reviewRepository;
 
   public ReviewService(ReviewRepository reviewRepository){
     this.reviewRepository = reviewRepository;
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
     System.out.println("*************");
-
-    Booking b = Booking.builder()
-                .bookingStatus(BookingStatus.CAB_ARRIVED)
-                .totalDistance(13L)
-                .build();
-
-    Review r = Review.builder()
-              .content("Amazing Ride")
-              .rating(5.0)
-              .booking(b)
-              .build();
-
-    reviewRepository.save(r);
-
   }
 }
