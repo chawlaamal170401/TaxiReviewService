@@ -1,6 +1,6 @@
 package org.amal.reviewservice.service;
 
-import org.amal.reviewservice.models.Review;
+import org.amal.reviewservice.models.*;
 import org.amal.reviewservice.repositories.ReviewRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
@@ -16,9 +16,16 @@ public class ReviewService implements CommandLineRunner {
   @Override
   public void run(String... args) throws Exception {
     System.out.println("*************");
+
+    Booking b = Booking.builder()
+                .bookingStatus(BookingStatus.CAB_ARRIVED)
+                .totalDistance(13L)
+                .build();
+
     Review r = Review.builder()
-              .comment("Amazing Ride")
-              .rating(4.0)
+              .content("Amazing Ride")
+              .rating(5.0)
+              .booking(b)
               .build();
 
     reviewRepository.save(r);
