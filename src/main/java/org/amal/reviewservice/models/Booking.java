@@ -2,8 +2,6 @@ package org.amal.reviewservice.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import java.util.Date;
 

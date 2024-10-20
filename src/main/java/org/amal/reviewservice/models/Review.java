@@ -1,5 +1,6 @@
 package org.amal.reviewservice.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "booking_review")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler" , "booking"})
 public class Review extends BaseModel{
 
   private String content;
@@ -23,7 +25,7 @@ public class Review extends BaseModel{
 
   @Override
   public String toString() {
-    return "Review: " + this.content + " " + this.rating + " " + " booking:  " + this.createdAt;
+    return "Review: " + this.content + " " + this.rating + " " + " booking:  " + this.booking.getId() + " Created At: "+ this.createdAt;
   }
 
 }

@@ -1,6 +1,10 @@
 package org.amal.reviewservice.controller;
 
 
+import jakarta.transaction.Transactional;
+import org.amal.reviewservice.adapters.CreateReviewDtoToReviewAdapter;
+import org.amal.reviewservice.dto.CreateReviewDTO;
+import org.amal.reviewservice.dto.ReviewDTO;
 import org.amal.reviewservice.models.Review;
 import org.amal.reviewservice.service.ReviewService;
 import org.springframework.http.HttpStatus;
@@ -15,15 +19,30 @@ import java.util.Optional;
 public class ReviewController {
 
   private ReviewService reviewService;
+  private CreateReviewDtoToReviewAdapter createReviewDtoToReviewAdapter;
 
-  public ReviewController(ReviewService reviewService){
+  public ReviewController(ReviewService reviewService, CreateReviewDtoToReviewAdapter createReviewDtoToReviewAdapter){
     this.reviewService = reviewService;
+    this.createReviewDtoToReviewAdapter = createReviewDtoToReviewAdapter;
   }
 
   @PostMapping
-  public ResponseEntity<Review> createReview(@RequestBody Review request){
-    Review review = reviewService.createReview(request);
-    return new ResponseEntity<>(review, HttpStatus.CREATED);
+  @Transactional
+  public ResponseEntity<?> createReview(@RequestBody CreateReviewDTO request){
+    Review incomingReview = createReviewDtoToReviewAdapter.convertDTO(request);
+    if(incomingReview == null){
+      return new ResponseEntity<>("Invalid Request", HttpStatus.BAD_REQUEST);
+    }
+    Review review = reviewService.createReview(incomingReview);
+    ReviewDTO response = ReviewDTO.builder()
+                        .id(review.getId())
+                        .content(review.getContent())
+                        .rating(review.getRating())
+                        .booking(review.getBooking().getId())
+                        .createdAt(review.getCreatedAt())
+                        .updatedAt(review.getUpdatedAt())
+                        .build();
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
 

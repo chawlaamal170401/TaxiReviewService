@@ -50,15 +50,21 @@ public class ReviewServiceImpl implements ReviewService{
   }
 
   @Override
-  public Review updateReviewById(Long reviewId, Review review) {
-    Review r = null;
+  public Review updateReviewById(Long reviewId, Review newReviewData) {
+    Review review = null;
     try{
-      r = reviewRepository.findById(reviewId).orElseThrow(EntityNotFoundException::new);
-      reviewRepository.save(r);
+      review = reviewRepository.findById(reviewId).orElseThrow(EntityNotFoundException::new);
+      if(review.getRating() != null){
+        review.setRating(newReviewData.getRating());
+      }
+      if(review.getContent() != null){
+        review.setContent(newReviewData.getContent());
+      }
+      reviewRepository.save(review);
     } catch (Exception e){
       e.printStackTrace();
     }
-    return r;
+    return review;
   }
 
   @Override
