@@ -1,20 +1,18 @@
 package org.amal.reviewservice.service;
 
-import org.amal.reviewservice.models.*;
-import org.amal.reviewservice.repositories.ReviewRepository;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Service;
+import org.amal.reviewservice.models.Review;
 
-@Service
-public class ReviewService implements CommandLineRunner {
-  private final ReviewRepository reviewRepository;
+import java.util.List;
+import java.util.Optional;
 
-  public ReviewService(ReviewRepository reviewRepository){
-    this.reviewRepository = reviewRepository;
-  }
+public interface ReviewService {
+  List<Review> getAllReviews();
 
-  @Override
-  public void run(String... args) {
-    System.out.println("*************");
-  }
+  Optional<Review> getReviewById(Long reviewId);
+
+  Boolean deleteReviewById(Long reviewId);
+
+  Review updateReviewById(Long reviewId, Review review);
+
+  Review createReview(Review review);
 }
